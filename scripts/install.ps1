@@ -1,10 +1,12 @@
 param(
-  [ValidateSet("global", "project")]
-  [string]$Scope = "project",
+  [ValidateSet("codex", "opencode", "claude", "project", "custom")]
+  [string]$Target = "project",
 
   [string]$ProjectPath = (Get-Location).Path,
 
-  [string]$SkillName = "execution-memory-engine-mvp"
+  [string]$CustomSkillsPath = "",
+
+  [string]$SkillName = "execution-memory-engine-skills"
 )
 
 $ErrorActionPreference = "Stop"
@@ -16,20 +18,35 @@ if (-not (Test-Path -LiteralPath (Join-Path $source "SKILL.md"))) {
   throw "Skill source not found: $source"
 }
 
-if ($Scope -eq "global") {
-  $targetRoot = Join-Path $env:USERPROFILE ".config\opencode\skills"
-} else {
-  $targetRoot = Join-Path $ProjectPath ".opencode\skills"
+switch ($Target) {
+  "codex" {
+    $targetRoot = Join-Path $env:USERPROFILE ".codex\skills"
+  }
+  "opencode" {
+    $targetRoot = Join-Path $env:USERPROFILE ".config\opencode\skills"
+  }
+  "claude" {
+    $targetRoot = Join-Path $env:USERPROFILE ".claude\skills"
+  }
+  "project" {
+    $targetRoot = Join-Path $ProjectPath ".skills"
+  }
+  "custom" {
+    if (-not $CustomSkillsPath) {
+      throw "-CustomSkillsPath is required when -Target custom is used."
+    }
+    $targetRoot = $CustomSkillsPath
+  }
 }
 
-$target = Join-Path $targetRoot $SkillName
+$destination = Join-Path $targetRoot $SkillName
 New-Item -ItemType Directory -Force -Path $targetRoot | Out-Null
 
-if (Test-Path -LiteralPath $target) {
-  Remove-Item -LiteralPath $target -Recurse -Force
+if (Test-Path -LiteralPath $destination) {
+  Remove-Item -LiteralPath $destination -Recurse -Force
 }
 
-Copy-Item -LiteralPath $source -Destination $target -Recurse
+Copy-Item -LiteralPath $source -Destination $destination -Recurse
 
-Write-Host "Installed $SkillName to $target"
-Write-Host "Verify with: opencode debug skill | Select-String '$SkillName'"
+Write-Host "Installed $SkillName to $destination"
+Write-Host "Use the installed SKILL.md with your LLM tool, or point the model at: $destination\SKILL.md"

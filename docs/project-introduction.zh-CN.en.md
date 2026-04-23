@@ -1,198 +1,158 @@
-# Execution Memory Engine MVP Skill 项目介绍 / Project Introduction
+# Execution Memory Engine Skills 项目介绍 / Project Introduction
 
 ## 1. 项目定位 / Positioning
 
 **中文**
 
-`execution-memory-engine-mvp` 是一个面向 OpenCode 的专业技能包，用于指导 AI Agent 在实现或维护 Execution Memory Engine 类项目时遵守正确的架构边界、测试流程和验证标准。
-
-它不是一个通用“记忆系统”提示词，而是针对 Execution Memory Engine MVP 的工程工作流技能。它帮助 Agent 在代码库中正确区分执行轨迹、提炼后的记忆、决策、失败模式、技能卡和最终给 Planner 使用的 Execution Brief。
+`Execution Memory Engine Skills` 是一个面向全部大模型和 AI Agent 的技能包。它不是 OpenCode 专属项目，也不是某一个命令行工具的插件。它的核心价值是把 Execution Memory Engine 的架构纪律、测试纪律和实现边界沉淀成一个可复用的 `SKILL.md`，让不同模型在参与相关项目时能更快进入正确工作方式。
 
 **English**
 
-`execution-memory-engine-mvp` is an OpenCode skill package for guiding AI agents while implementing or maintaining Execution Memory Engine style repositories. It encodes architecture boundaries, testing expectations, and verification routines for the MVP.
+`Execution Memory Engine Skills` is a model-agnostic skill package for large language models and AI agents. It is not an OpenCode-only project and not a plugin for a single CLI. Its value is to encode the architecture discipline, testing discipline, and implementation boundaries of Execution Memory Engine systems into a reusable `SKILL.md`.
 
-It is not a generic memory-system prompt. It is a workflow skill for the Execution Memory Engine MVP. It helps an agent keep run traces, distilled memories, decisions, failure patterns, skill cards, and planner-facing Execution Briefs separate.
-
-## 2. 适用场景 / When To Use
+## 2. 为什么需要这个 Skills 包 / Why This Skills Package Exists
 
 **中文**
 
-适合在以下任务中启用：
+Execution Memory Engine 的关键难点不在于保存数据，而在于保持概念边界：
 
-- 修改 Execution Memory Engine MVP 的 TypeScript/Node.js 实现
-- 调试 run trace、Operation、distillation、retrieval、brief generation
-- 审查是否错误地把原始 run trace 注入到 Execution Brief
-- 增加 Seed Skills 或 Learned Skills
-- 验证 Brief 是否保留 dependency cluster
-- 运行 MVP 的测试、构建、demo 和 API smoke test
+- 执行轨迹是证据，不是长期记忆。
+- 记忆是提炼后的经验，不是聊天流水。
+- Brief 是给 Planner 的压缩输入，不是检索列表。
+- Operation 是长耗时任务的生命周期模型，不是普通日志字段。
+- Skill 是稳定工作流经验，不是一次性总结。
+
+如果模型忽略这些边界，最终系统会退化成“把历史记录塞回上下文”的简单方案，丢失可复用性、可观测性和 token 效率。
 
 **English**
 
-Use this skill when:
+The hard part of an Execution Memory Engine is not storing data. The hard part is preserving conceptual boundaries:
 
-- modifying a TypeScript/Node.js Execution Memory Engine MVP
-- debugging run trace, Operation, distillation, retrieval, or brief generation
-- reviewing whether raw run trace is incorrectly injected into an Execution Brief
-- adding Seed Skills or Learned Skills
-- verifying that dependency clusters are preserved in generated briefs
-- running MVP tests, builds, demos, and API smoke checks
+- run traces are evidence, not long-term memory
+- memories are distilled experience, not chat transcripts
+- briefs are compressed planner input, not retrieval dumps
+- operations model long-running task lifecycles, not ordinary log fields
+- skills capture stable workflows, not one-off summaries
 
-## 3. 核心设计原则 / Core Design Principles
+When a model ignores these boundaries, the system degrades into a simple "stuff history back into context" mechanism and loses reusability, observability, and token efficiency.
+
+## 3. 支持的模型与工具 / Supported Models And Tools
 
 **中文**
 
-该 skill 强制关注以下设计原则：
+该 skill 可以用于：
 
-1. `run trace` 是原始事实层，不是长期记忆。
-2. `memory`、`decision`、`failure_pattern`、`skill` 是经过提炼的经验层对象。
-3. `ExecutionBrief` 是给 Planner / Tool Selection 使用的压缩输入，不是 trace dump。
-4. 长耗时任务必须通过 `Operation` 建模，不能只依赖同步请求日志。
-5. Brief 必须依赖感知组装，不能线性裁剪掉支撑 Decision 或 Failure Pattern。
-6. Embedded Profile 要可本地运行，同时通过 Adapter 为 Cloud Profile 留扩展点。
+- Codex / OpenAI Codex
+- OpenCode
+- Claude Code
+- Gemini CLI
+- Cursor / Windsurf / IDE Agent
+- 自研 Agent Runtime
+- 任意支持读取 Markdown 指令的大模型工具
 
 **English**
 
-The skill emphasizes these principles:
+This skill can be used with:
 
-1. `run trace` is raw evidence, not long-term memory.
-2. `memory`, `decision`, `failure_pattern`, and `skill` are distilled experience objects.
-3. `ExecutionBrief` is compressed input for Planner / Tool Selection, not a trace dump.
-4. Long-running tasks must be modeled with `Operation`, not only synchronous logs.
-5. Brief generation must be dependency-aware and must not linearly truncate supporting decisions or failure patterns.
-6. Embedded Profile should run locally, while adapter boundaries preserve Cloud Profile extensibility.
+- Codex / OpenAI Codex
+- OpenCode
+- Claude Code
+- Gemini CLI
+- Cursor / Windsurf / IDE agents
+- custom agent runtimes
+- any LLM tool that can read Markdown instructions
 
-## 4. Skill 内容 / What The Skill Contains
+## 4. Skill 文件 / Skill File
 
-**中文**
-
-安装后的 skill 文件位于：
+The installable skill is:
 
 ```text
-skills/execution-memory-engine-mvp/SKILL.md
-```
-
-它包含：
-
-- 架构边界提醒
-- 必须运行的验证命令
-- 典型源码文件映射
-- 设计规则
-- 修改代码时的测试优先流程
-
-**English**
-
-The installable skill file is:
-
-```text
-skills/execution-memory-engine-mvp/SKILL.md
+skills/execution-memory-engine-skills/SKILL.md
 ```
 
 It contains:
 
-- architecture boundary reminders
-- required verification commands
-- typical source file map
+- source-of-truth rules
+- architecture boundaries
+- MVP loop requirements
+- verification routine
+- typical implementation map
 - design rules
-- test-first change workflow
+- change workflow
 
 ## 5. 安装方式 / Installation
 
-### 5.1 项目级安装 / Project-local Installation
-
-**中文**
-
-项目级安装会把 skill 复制到目标项目的 `.opencode/skills/` 目录。只有该项目会自动发现这个 skill。
-
-**English**
-
-Project-local installation copies the skill into the target project's `.opencode/skills/` directory. Only that project will discover the skill automatically.
+### Codex
 
 ```powershell
-git clone https://github.com/Lawrence7y/opencode-execution-memory-engine-skill.git
-cd opencode-execution-memory-engine-skill
-.\scripts\install.ps1 -Scope project -ProjectPath "D:\path\to\your\project"
+git clone https://github.com/Lawrence7y/Execution-Memory-Engine-Skills.git
+cd Execution-Memory-Engine-Skills
+.\scripts\install.ps1 -Target codex
 ```
 
-验证 / Verify:
+### OpenCode
 
 ```powershell
-cd "D:\path\to\your\project"
-opencode debug skill | Select-String "execution-memory-engine-mvp"
+git clone https://github.com/Lawrence7y/Execution-Memory-Engine-Skills.git
+cd Execution-Memory-Engine-Skills
+.\scripts\install.ps1 -Target opencode
 ```
 
-### 5.2 全局安装 / Global Installation
-
-**中文**
-
-全局安装会把 skill 复制到当前用户的 OpenCode 配置目录，所有项目都可以发现。
-
-**English**
-
-Global installation copies the skill into the current user's OpenCode config directory, making it available to all projects.
+### Claude Code
 
 ```powershell
-git clone https://github.com/Lawrence7y/opencode-execution-memory-engine-skill.git
-cd opencode-execution-memory-engine-skill
-.\scripts\install.ps1 -Scope global
+git clone https://github.com/Lawrence7y/Execution-Memory-Engine-Skills.git
+cd Execution-Memory-Engine-Skills
+.\scripts\install.ps1 -Target claude
 ```
 
-验证 / Verify:
+### Generic Project Install
 
 ```powershell
-opencode debug skill | Select-String "execution-memory-engine-mvp"
+git clone https://github.com/Lawrence7y/Execution-Memory-Engine-Skills.git
+cd Execution-Memory-Engine-Skills
+.\scripts\install.ps1 -Target project -ProjectPath "D:\path\to\your\project"
 ```
 
-### 5.3 macOS / Linux
+Then ask the model to read:
 
-```bash
-git clone https://github.com/Lawrence7y/opencode-execution-memory-engine-skill.git
-cd opencode-execution-memory-engine-skill
-chmod +x scripts/install.sh
-./scripts/install.sh project /path/to/your/project
-# or
-./scripts/install.sh global
+```text
+D:\path\to\your\project\.skills\execution-memory-engine-skills\SKILL.md
 ```
 
 ## 6. 使用方式 / Usage
 
 **中文**
 
-在目标项目中运行：
-
-```powershell
-opencode run --dir "D:\path\to\your\project" "Use the execution-memory-engine-mvp skill. Tell me the verification commands for this repository, but do not modify files."
-```
-
-如果 skill 正常生效，OpenCode 输出中通常会出现：
+如果工具支持 skill 自动发现：
 
 ```text
-→ Skill "execution-memory-engine-mvp"
+Use the execution-memory-engine-skills skill.
 ```
 
-并返回类似：
+如果工具不支持自动发现：
 
-```powershell
-npm.cmd test
-npm.cmd run build
-npm.cmd run demo
+```text
+Read the file .skills/execution-memory-engine-skills/SKILL.md and follow it for this task.
 ```
 
 **English**
 
-Run this inside the target project:
-
-```powershell
-opencode run --dir "D:\path\to\your\project" "Use the execution-memory-engine-mvp skill. Tell me the verification commands for this repository, but do not modify files."
-```
-
-When the skill is active, OpenCode usually prints:
+If your tool supports skill discovery:
 
 ```text
-→ Skill "execution-memory-engine-mvp"
+Use the execution-memory-engine-skills skill.
 ```
 
-and returns commands such as:
+If it does not:
+
+```text
+Read the file .skills/execution-memory-engine-skills/SKILL.md and follow it for this task.
+```
+
+## 7. 验证方式 / Verification
+
+For a TypeScript + Node.js Execution Memory Engine MVP, the skill expects:
 
 ```powershell
 npm.cmd test
@@ -200,19 +160,7 @@ npm.cmd run build
 npm.cmd run demo
 ```
 
-## 7. 验证策略 / Verification Strategy
-
-**中文**
-
-该 skill 要求 Agent 在完成代码修改后运行：
-
-```powershell
-npm.cmd test
-npm.cmd run build
-npm.cmd run demo
-```
-
-对于 API：
+For an API smoke test:
 
 ```powershell
 $job = Start-Job -ScriptBlock { Set-Location (Get-Location); $env:PORT='3212'; node --disable-warning=ExperimentalWarning --experimental-strip-types src/api/server.ts }
@@ -225,38 +173,37 @@ try {
 }
 ```
 
-**English**
-
-The skill expects agents to run:
-
-```powershell
-npm.cmd test
-npm.cmd run build
-npm.cmd run demo
-```
-
-For API smoke testing:
-
-```powershell
-$job = Start-Job -ScriptBlock { Set-Location (Get-Location); $env:PORT='3212'; node --disable-warning=ExperimentalWarning --experimental-strip-types src/api/server.ts }
-try {
-  Start-Sleep -Seconds 3
-  Invoke-RestMethod -Uri 'http://127.0.0.1:3212/health'
-} finally {
-  Stop-Job $job -ErrorAction SilentlyContinue
-  Remove-Job $job -Force -ErrorAction SilentlyContinue
-}
-```
-
-## 8. 与 Execution Memory Engine MVP 的关系 / Relationship To The MVP
+## 8. 推荐实现边界 / Recommended Implementation Boundaries
 
 **中文**
 
-这个仓库只发布 OpenCode skill，不包含完整 Execution Memory Engine MVP 实现。完整 MVP 项目可以使用该 skill 来指导开发、调试、测试和审查。
+模型在实现项目时应保留这些边界：
+
+- `ExecutionMemoryStore`
+- `VectorIndexAdapter`
+- `QueueAdapter`
+- `ArtifactStoreAdapter`
+- `RunTraceLogger`
+- `OperationManager`
+- `ExperienceDistiller`
+- `RetrievalEngine`
+- `BriefGenerator`
+- `SkillBuilder`
 
 **English**
 
-This repository publishes only the OpenCode skill. It does not contain the full Execution Memory Engine MVP implementation. A full MVP repository can use this skill to guide development, debugging, testing, and review.
+When implementing a project, the model should preserve these boundaries:
+
+- `ExecutionMemoryStore`
+- `VectorIndexAdapter`
+- `QueueAdapter`
+- `ArtifactStoreAdapter`
+- `RunTraceLogger`
+- `OperationManager`
+- `ExperienceDistiller`
+- `RetrievalEngine`
+- `BriefGenerator`
+- `SkillBuilder`
 
 ## 9. 后续扩展 / Future Extensions
 
@@ -264,16 +211,18 @@ This repository publishes only the OpenCode skill. It does not contain the full 
 
 后续可以加入：
 
-- 更细的 Cloud Profile adapter 检查清单
+- 多个子 skill，例如 architecture、distillation、retrieval、brief-packing
+- 针对 Codex / Claude / OpenCode / Gemini 的安装元数据
 - sqlite-vec / pgvector 替换指南
-- Brief cluster packing 专项测试提示
-- OpenCode 自动安装插件封装
+- Cloud Profile adapter checklist
+- 更完整的 example prompts
 
 **English**
 
-Possible future additions:
+Future extensions may include:
 
-- deeper Cloud Profile adapter checklist
+- multiple sub-skills such as architecture, distillation, retrieval, and brief-packing
+- installation metadata for Codex / Claude / OpenCode / Gemini
 - sqlite-vec / pgvector replacement guide
-- dedicated Brief cluster packing test prompts
-- OpenCode plugin-based auto-install packaging
+- Cloud Profile adapter checklist
+- richer example prompts
