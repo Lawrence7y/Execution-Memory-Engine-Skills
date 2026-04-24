@@ -1,0 +1,7 @@
+interface:
+  display_name: "Execution Memory Engine Skills"
+  short_description: "Guides agents building execution memory systems."
+  default_prompt: "Use $execution-memory-engine-skills to plan, implement, test, or review an Execution Memory Engine system."
+
+policy:
+  allow_implicit_invocation: true

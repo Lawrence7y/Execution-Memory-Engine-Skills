@@ -47,6 +47,12 @@ The installable skill file is:
 skills/execution-memory-engine-skills/SKILL.md
 ```
 
+Codex / OpenAI interface metadata is:
+
+```text
+skills/execution-memory-engine-skills/agents/openai.yaml
+```
+
 It contains:
 
 - source-of-truth rules for Execution Memory Engine work
@@ -181,12 +187,20 @@ When implementing an Execution Memory Engine project, the model should preserve 
 
 These boundaries let Embedded Profile ship first while keeping Cloud Profile extensible.
 
-## 9. Future Extensions
+## 9. License
+
+This repository is released under the MIT License. The license file is:
+
+```text
+LICENSE
+```
+
+## 10. Future Extensions
 
 This repository can later add:
 
 - smaller sub-skills such as architecture, distillation, retrieval, and brief-packing
-- installation metadata for Codex / Claude / OpenCode / Gemini
+- more tool-specific metadata and default prompts
 - sqlite-vec / pgvector replacement guidance
 - Cloud Profile adapter checklist
 - richer example prompts and forward tests

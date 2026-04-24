@@ -58,6 +58,8 @@ The skill helps models avoid common mistakes:
 ```text
 skills/
   execution-memory-engine-skills/
+    agents/
+      openai.yaml                  # Codex / OpenAI skill UI metadata
     SKILL.md                       # model-agnostic skill file
 scripts/
   install.ps1                      # Windows installer
@@ -67,6 +69,7 @@ docs/
   project-introduction.en.md       # English detailed introduction
 README.md                          # Chinese entry
 README.en.md                       # English entry
+LICENSE                            # MIT license
 ```
 
 ## Installation
@@ -198,4 +201,4 @@ examples/demo.ts
 
 ## License
 
-No license has been added yet. Add one before using this repository in a public package ecosystem or commercial distribution.
+This project is released under the MIT License. See [LICENSE](LICENSE).

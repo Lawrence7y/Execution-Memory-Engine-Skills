@@ -1,6 +1,6 @@
 ---
 name: execution-memory-engine-skills
-description: Guide any AI coding agent or large language model assistant working on Execution Memory Engine systems. Use when designing, implementing, testing, debugging, reviewing, or documenting systems for run trace logging, Operation tracking, experience distillation, memory retrieval, dependency-aware Execution Brief generation, Seed Skills, Learned Skills, or Embedded/Cloud memory engine profiles.
+description: Use when designing, implementing, testing, debugging, reviewing, or documenting Execution Memory Engine systems involving run trace logging, Operation tracking, experience distillation, memory retrieval, dependency-aware Execution Brief generation, Seed Skills, Learned Skills, or Embedded/Cloud memory engine profiles.
 ---
 
 # Execution Memory Engine Skills
